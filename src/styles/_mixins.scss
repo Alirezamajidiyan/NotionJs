@@ -1,0 +1,8 @@
+@use "./variables" as *;
+
+@mixin notification-style($bg-color) {
+  background: $bg-color;
+  color: white;
+  border-radius: $border-radius;
+  padding: $padding;
+}

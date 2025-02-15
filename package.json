@@ -1,0 +1,38 @@
+{
+  "name": "react-notionjs",
+  "version": "1.0.6",
+  "description": "A lightweight notification library for React",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "Keywords": [
+    "notification",
+    "react-notification ",
+    "react-notionjs",
+    "js",
+    "typescript"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "sass": "^1.85.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
+  },
+  "scripts": {
+    "clean": "rm -rf dist || rmdir /s /q dist",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:css",
+    "build:esm": "tsc --module ESNext --outDir dist/esm",
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
+    "build:css": "sass src/styles/main.scss dist/styles.css"
+  }
+}

@@ -1,0 +1,48 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notification {
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+
+  &-success {
+    @include notification-style($success-color);
+  }
+  &-error {
+    @include notification-style($error-color);
+  }
+  &-warning {
+    @include notification-style($warning-color);
+  }
+  &-info {
+    @include notification-style($info-color);
+  }
+  &-alert {
+    @include notification-style($alert-color);
+  }
+
+  &-filled {
+    border: none;
+  }
+  &-outlined {
+    background: transparent;
+    border: 2px solid;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+}
