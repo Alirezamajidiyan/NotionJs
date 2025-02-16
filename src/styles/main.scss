@@ -1,8 +1,6 @@
-/* ------------------------------------------
-   Main SCSS - Advanced & Responsive Styles
---------------------------------------------- */
+@charset "UTF-8";
 
-/* تعریف متغیرهای CSS برای تم (light/dark) و رنگ‌ها */
+
 :root {
   --bg-color: #ffffff;
   --text-color: #333333;
@@ -11,8 +9,9 @@
   --warning-color: #ff9800;
   --info-color: #2196f3;
   --alert-color: #9e9e9e;
-  --border-radius: 5px;
-  --padding: 12px 16px;
+  --border-radius: 8px;
+  --padding: 16px 20px;
+  --transition-duration: 0.3s;
 }
 
 /* Reset و استایل‌های پایه */
@@ -29,33 +28,9 @@ body {
   background: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
-.icon-success{
-  width: 50px;
-  height: 50px;
-  color: var(--primary-color);
-}
-.icon-error{
-  width: 50px;
-  height: 50px;
-  color: var(--secondary-color);
-}
-.icon-warning{
-  width: 50px;
-  height: 50px;
-  color: var(--warning-color);
-}
-.icon-info{
-  width: 50px;
-  height: 50px;
-  color: var(--info-color);
-}
-.icon-confrim{
-  width: 50px;
-  height: 50px;
-  color: var(--alert-color);
-}
 /* ------------------------------------------
    Notification Container & Positioning
 --------------------------------------------- */
@@ -64,40 +39,42 @@ body {
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  padding: 10px;
+  pointer-events: none; /* جلوگیری از تعامل با خود نوتیفیکیشن */
+}
 
-  &.notification-top-right {
-    top: 20px;
-    right: 20px;
-    align-items: flex-end;
-  }
-  &.notification-top-left {
-    top: 20px;
-    left: 20px;
-    align-items: flex-start;
-  }
-  &.notification-top-center {
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    align-items: center;
-  }
-  &.notification-bottom-right {
-    bottom: 20px;
-    right: 20px;
-    align-items: flex-end;
-  }
-  &.notification-bottom-left {
-    bottom: 20px;
-    left: 20px;
-    align-items: flex-start;
-  }
-  &.notification-bottom-center {
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    align-items: center;
-  }
+.notification-container.notification-top-right {
+  top: 20px;
+  right: 20px;
+  align-items: flex-end;
+}
+.notification-container.notification-top-left {
+  top: 20px;
+  left: 20px;
+  align-items: flex-start;
+}
+.notification-container.notification-top-center {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+.notification-container.notification-bottom-right {
+  bottom: 20px;
+  right: 20px;
+  align-items: flex-end;
+}
+.notification-container.notification-bottom-left {
+  bottom: 20px;
+  left: 20px;
+  align-items: flex-start;
+}
+.notification-container.notification-bottom-center {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
 }
 
 /* ------------------------------------------
@@ -111,78 +88,98 @@ body {
   color: var(--text-color);
   padding: var(--padding);
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
-  gap: 10px;
-  animation: fadeIn 0.3s ease-out;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  gap: 15px;
+  animation: fadeIn var(--transition-duration) ease-out;
+  pointer-events: all;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform var(--transition-duration),
+    opacity var(--transition-duration);
+}
 
-  /* انواع نوتیفیکیشن با رنگ‌های متفاوت */
-  &.notification-success {
-    border-left: 5px solid var(--primary-color);
-  }
-  &.notification-error {
-    border-left: 5px solid var(--secondary-color);
-  }
-  &.notification-warning {
-    border-left: 5px solid var(--warning-color);
-  }
-  &.notification-info {
-    border-left: 5px solid var(--info-color);
-  }
-  &.notification-alert {
-    border-left: 5px solid var(--alert-color);
-  }
+.notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
 
-  /* استایل‌های متفاوت برای حالت‌های outlined و filled */
-  &.notification-outlined {
-    background: transparent;
-    border: 2px solid var(--text-color);
-  }
-  &.notification-filled {
-    background: var(--text-color);
-    color: var(--bg-color);
-    border: none;
-  }
+/* انواع نوتیفیکیشن با رنگ‌های متفاوت */
+.notification.notification-success {
+  border-left: 5px solid var(--primary-color);
+  background-color: rgba(76, 175, 80, 0.1);
+}
+.notification.notification-error {
+  border-left: 5px solid var(--secondary-color);
+  background-color: rgba(244, 67, 54, 0.1);
+}
+.notification.notification-warning {
+  border-left: 5px solid var(--warning-color);
+  background-color: rgba(255, 152, 0, 0.1);
+}
+.notification.notification-info {
+  border-left: 5px solid var(--info-color);
+  background-color: rgba(33, 150, 243, 0.1);
+}
+.notification.notification-alert {
+  border-left: 5px solid var(--alert-color);
+  background-color: rgba(158, 158, 158, 0.1);
+}
 
-  /* محتویات نوتیفیکیشن */
-  .notification-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+/* استایل‌های متفاوت برای حالت‌های outlined و filled */
+.notification.notification-outlined {
+  background: transparent;
+  border: 2px solid var(--text-color);
+}
 
-    .notification-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .notification-message {
-      font-size: 0.95rem;
-    }
-  }
+.notification.notification-filled {
+  background: var(--text-color);
+  color: var(--bg-color);
+  border: none;
+}
 
-  /* دکمه بستن */
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--text-color);
-  }
+/* محتویات نوتیفیکیشن */
+.notification .notification-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
-  /* Progress Bar (نوار پیشرفت معکوس) */
-  .progress-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.7);
-    width: 0;
-    border-bottom-left-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
-    animation: progress 3s linear forwards;
-  }
+.notification .notification-content .notification-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.notification .notification-content .notification-message {
+  font-size: 0.95rem;
+}
+
+.notification .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: color 0.2s;
+}
+
+.notification .close-btn:hover {
+  color: #000;
+}
+
+/* Progress Bar (نوار پیشرفت معکوس) */
+.notification .progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  width: 0;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  animation: progress 3s linear forwards;
 }
 
 /* ------------------------------------------
@@ -198,7 +195,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   z-index: 10000;
 }
 
@@ -212,42 +208,44 @@ body {
   width: 100%;
   animation: slideDown 0.3s ease-out;
   text-align: center;
+}
 
-  .modal-content {
-    margin-bottom: 20px;
-  }
+.confirm-modal .modal-content {
+  margin-bottom: 20px;
+}
 
-  .modal-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+.confirm-modal .modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
 
-    button {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s ease;
-    }
+.confirm-modal .modal-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
 
-    .confirm-btn {
-      background: var(--primary-color);
-      color: #fff;
-      &:hover {
-        filter: brightness(0.9);
-      }
-    }
+.confirm-modal .modal-buttons .confirm-btn {
+  background: var(--primary-color);
+  color: #fff;
+}
 
-    .cancel-btn {
-      background: var(--secondary-color);
-      color: #fff;
-      &:hover {
-        filter: brightness(0.9);
-      }
-    }
-  }
+.confirm-modal .modal-buttons .confirm-btn:hover {
+  background: var(--primary-color-dark);
+}
+
+.confirm-modal .modal-buttons .cancel-btn {
+  background: var(--secondary-color);
+  color: #fff;
+}
+
+.confirm-modal .modal-buttons .cancel-btn:hover {
+  background: var(--secondary-color-dark);
 }
 
 /* ------------------------------------------
@@ -256,7 +254,7 @@ body {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
@@ -291,7 +289,7 @@ body {
   .notification {
     min-width: 90%;
     max-width: 90%;
-    padding: 10px;
+    padding: 12px;
   }
   .confirm-modal {
     width: 90%;
@@ -303,10 +301,41 @@ body {
   .notification {
     min-width: 95%;
     max-width: 95%;
-    padding: 8px;
+    padding: 10px;
   }
   .confirm-modal {
     width: 95%;
-    padding: 10px;
+    padding: 12px;
   }
+}
+
+/* Icon sizes for notifications */
+.icon-success {
+  width: 40px;
+  height: 40px;
+  color: var(--primary-color);
+}
+
+.icon-error {
+  width: 40px;
+  height: 40px;
+  color: var(--secondary-color);
+}
+
+.icon-warning {
+  width: 40px;
+  height: 40px;
+  color: var(--warning-color);
+}
+
+.icon-info {
+  width: 40px;
+  height: 40px;
+  color: var(--info-color);
+}
+
+.icon-confirm {
+  width: 40px;
+  height: 40px;
+  color: var(--alert-color);
 }
