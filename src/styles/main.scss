@@ -31,6 +31,31 @@ body {
   line-height: 1.6;
 }
 
+.icon-success{
+  width: 50px;
+  height: 50px;
+  color: var(--primary-color);
+}
+.icon-error{
+  width: 50px;
+  height: 50px;
+  color: var(--secondary-color);
+}
+.icon-warning{
+  width: 50px;
+  height: 50px;
+  color: var(--warning-color);
+}
+.icon-info{
+  width: 50px;
+  height: 50px;
+  color: var(--info-color);
+}
+.icon-confrim{
+  width: 50px;
+  height: 50px;
+  color: var(--alert-color);
+}
 /* ------------------------------------------
    Notification Container & Positioning
 --------------------------------------------- */
