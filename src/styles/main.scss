@@ -1,53 +1,168 @@
-@use "variables";
-@use "mixins";
-@use "notifications";
-@use "modals";
+/* ------------------------------------------
+   Main SCSS - Advanced & Responsive Styles
+--------------------------------------------- */
 
-// Theming using CSS variables
-body.light-theme {
-  --bg-color: #{variables.$background-light};
-  --text-color: #{variables.$text-color-light};
+/* تعریف متغیرهای CSS برای تم (light/dark) و رنگ‌ها */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #4caf50;
+  --secondary-color: #f44336;
+  --warning-color: #ff9800;
+  --info-color: #2196f3;
+  --alert-color: #9e9e9e;
+  --border-radius: 5px;
+  --padding: 12px 16px;
 }
 
-body.dark-theme {
-  --bg-color: #{variables.$background-dark};
-  --text-color: #{variables.$text-color-dark};
+/* Reset و استایل‌های پایه */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Base notification styling */
-.notification {
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
-  border-radius: variables.$border-radius;
-  padding: variables.$padding;
+  line-height: 1.6;
+}
+
+/* ------------------------------------------
+   Notification Container & Positioning
+--------------------------------------------- */
+.notification-container {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &.notification-top-right {
+    top: 20px;
+    right: 20px;
+    align-items: flex-end;
+  }
+  &.notification-top-left {
+    top: 20px;
+    left: 20px;
+    align-items: flex-start;
+  }
+  &.notification-top-center {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+  &.notification-bottom-right {
+    bottom: 20px;
+    right: 20px;
+    align-items: flex-end;
+  }
+  &.notification-bottom-left {
+    bottom: 20px;
+    left: 20px;
+    align-items: flex-start;
+  }
+  &.notification-bottom-center {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+}
+
+/* ------------------------------------------
+   Notification Styles
+--------------------------------------------- */
+.notification {
+  position: relative;
+  min-width: 280px;
+  max-width: 400px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  padding: var(--padding);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
-  position: relative;
-  margin-bottom: 10px;
-  animation: fadeIn 0.3s;
+  gap: 10px;
+  animation: fadeIn 0.3s ease-out;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  /* انواع نوتیفیکیشن با رنگ‌های متفاوت */
+  &.notification-success {
+    border-left: 5px solid var(--primary-color);
+  }
+  &.notification-error {
+    border-left: 5px solid var(--secondary-color);
+  }
+  &.notification-warning {
+    border-left: 5px solid var(--warning-color);
+  }
+  &.notification-info {
+    border-left: 5px solid var(--info-color);
+  }
+  &.notification-alert {
+    border-left: 5px solid var(--alert-color);
+  }
+
+  /* استایل‌های متفاوت برای حالت‌های outlined و filled */
+  &.notification-outlined {
+    background: transparent;
+    border: 2px solid var(--text-color);
+  }
+  &.notification-filled {
+    background: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+  }
+
+  /* محتویات نوتیفیکیشن */
+  .notification-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .notification-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .notification-message {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* دکمه بستن */
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-color);
+  }
+
+  /* Progress Bar (نوار پیشرفت معکوس) */
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.7);
+    width: 0;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    animation: progress 3s linear forwards;
+  }
 }
 
-/* Entry and exit transitions */
-.notification.enter {
-  opacity: 0;
-  animation: fadeIn 0.3s forwards;
-}
-.notification.exit {
-  opacity: 1;
-  animation: fadeOut 0.3s forwards;
-}
-
-/* Progress bar animation (reverse fill) */
-.progress-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.7);
-  width: 0%;
-}
-
-/* Modal overlay for confirm notifications */
+/* ------------------------------------------
+   Modal Overlay & Confirm Modal Styles
+--------------------------------------------- */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -58,44 +173,61 @@ body.dark-theme {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  padding: 20px;
+  z-index: 10000;
 }
 
-/* Notification container positioning */
-.notification-container.notification-top-right {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-}
-.notification-container.notification-top-left {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-}
-.notification-container.notification-top-center {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.notification-container.notification-bottom-right {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-.notification-container.notification-bottom-left {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-}
-.notification-container.notification-bottom-center {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+.confirm-modal {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  animation: slideDown 0.3s ease-out;
+  text-align: center;
+
+  .modal-content {
+    margin-bottom: 20px;
+  }
+
+  .modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .confirm-btn {
+      background: var(--primary-color);
+      color: #fff;
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+
+    .cancel-btn {
+      background: var(--secondary-color);
+      color: #fff;
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+  }
 }
 
-/* Keyframe animations for fade and progress bar */
+/* ------------------------------------------
+   Animations
+--------------------------------------------- */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -107,22 +239,49 @@ body.dark-theme {
   }
 }
 
-@keyframes fadeOut {
+@keyframes slideDown {
   from {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0;
+    transform: translateY(-20px);
   }
   to {
-    opacity: 0;
-    transform: translateY(-10px);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes progress {
   from {
-    width: 0%;
+    width: 0;
   }
   to {
     width: 100%;
+  }
+}
+
+/* ------------------------------------------
+   Responsive Adjustments
+--------------------------------------------- */
+@media (max-width: 768px) {
+  .notification {
+    min-width: 90%;
+    max-width: 90%;
+    padding: 10px;
+  }
+  .confirm-modal {
+    width: 90%;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .notification {
+    min-width: 95%;
+    max-width: 95%;
+    padding: 8px;
+  }
+  .confirm-modal {
+    width: 95%;
+    padding: 10px;
   }
 }
