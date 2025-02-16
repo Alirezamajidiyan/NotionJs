@@ -1,2 +1,128 @@
-// main.scss
-@use "./index"; 
+@use "variables";
+@use "mixins";
+@use "notifications";
+@use "modals";
+
+// Theming using CSS variables
+body.light-theme {
+  --bg-color: #{variables.$background-light};
+  --text-color: #{variables.$text-color-light};
+}
+
+body.dark-theme {
+  --bg-color: #{variables.$background-dark};
+  --text-color: #{variables.$text-color-dark};
+}
+
+/* Base notification styling */
+.notification {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border-radius: variables.$border-radius;
+  padding: variables.$padding;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s;
+}
+
+/* Entry and exit transitions */
+.notification.enter {
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+.notification.exit {
+  opacity: 1;
+  animation: fadeOut 0.3s forwards;
+}
+
+/* Progress bar animation (reverse fill) */
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  width: 0%;
+}
+
+/* Modal overlay for confirm notifications */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Notification container positioning */
+.notification-container.notification-top-right {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+.notification-container.notification-top-left {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+}
+.notification-container.notification-top-center {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.notification-container.notification-bottom-right {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+.notification-container.notification-bottom-left {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+.notification-container.notification-bottom-center {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Keyframe animations for fade and progress bar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

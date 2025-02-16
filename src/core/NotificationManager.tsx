@@ -1,9 +1,17 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { NotificationOptions } from "./types";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import Notification from "./Notification";
+import { NotificationOptions } from "./types";
+import { registerNotificationHandler } from "./NotificationService";
 
 interface NotificationContextProps {
   addNotification: (notification: NotificationOptions) => void;
+  removeNotification: (id: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextProps | undefined>(
@@ -16,36 +24,83 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
   const [notifications, setNotifications] = useState<NotificationOptions[]>([]);
 
   const addNotification = (notification: NotificationOptions) => {
-    const newNotification = { ...notification, id: `notif-${Date.now()}` };
-    setNotifications((prev) => [...prev, newNotification]);
+    const id = notification.id || `notif-${Date.now()}`;
+    setNotifications((prev) => [...prev, { ...notification, id }]);
   };
 
   const removeNotification = (id: string) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
+  // Register the addNotification handler so that the service can call it
+  useEffect(() => {
+    registerNotificationHandler(addNotification);
+  }, []);
+
   return (
-    <NotificationContext.Provider value={{ addNotification }}>
+    <NotificationContext.Provider
+      value={{ addNotification, removeNotification }}
+    >
       {children}
-      <div className="notification-container">
-        {notifications.map((notif) => (
-          <Notification
-            key={notif.id}
-            {...notif}
-            onRemove={removeNotification}
-          />
-        ))}
-      </div>
+      {/* Render grouped notifications based on position (non-confirm) */}
+      {[
+        "top-right",
+        "top-left",
+        "top-center",
+        "bottom-right",
+        "bottom-left",
+        "bottom-center",
+      ].map((position) => {
+        const positionNotifs = notifications.filter(
+          (n) => n.position === position && n.type !== "confirm"
+        );
+        return (
+          <div
+            key={position}
+            className={`notification-container notification-${position}`}
+          >
+            {positionNotifs.map((notif) => (
+              <Notification
+                key={notif.id}
+                {...notif}
+                onClose={() => {
+                  notif.onClose && notif.onClose();
+                  removeNotification(notif.id!);
+                }}
+              />
+            ))}
+          </div>
+        );
+      })}
+      {/* Render confirm notifications in a centered modal overlay */}
+      {notifications.filter((n) => n.type === "confirm").length > 0 && (
+        <div className="modal-overlay">
+          {notifications
+            .filter((n) => n.type === "confirm")
+            .map((notif) => (
+              <Notification
+                key={notif.id}
+                {...notif}
+                onClose={() => {
+                  notif.onClose && notif.onClose();
+                  removeNotification(notif.id!);
+                }}
+              />
+            ))}
+        </div>
+      )}
     </NotificationContext.Provider>
   );
 };
 
-export const useNotification = (): NotificationContextProps => {
+export const useNotificationContext = (): NotificationContextProps => {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotification must be used within a NotificationProvider"
+      "useNotificationContext must be used within a NotificationProvider"
     );
   }
   return context;
 };
+
+export { Notification };
