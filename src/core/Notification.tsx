@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { NotificationOptions } from "./types";
+import { NotificationOptions,NotificationPosition } from "./types";
 
 interface NotificationProps extends NotificationOptions {
   onRemove?: (id: string) => void;
@@ -12,6 +12,7 @@ const Notification: React.FC<NotificationProps> = ({
   duration = 3000,
   dismissible = true,
   style = "default",
+  position="top-right",
   onRemove,
 }) => {
   // تولید یک شناسه منحصر به فرد در صورت عدم وجود id
@@ -27,7 +28,7 @@ const Notification: React.FC<NotificationProps> = ({
 
   return (
     <div
-      className={`notification notification-${type} notification-${style}`}
+      className={`notification notification-${type} notification-${style} notification-${position}`}
       id={notificationId}
     >
       {message}

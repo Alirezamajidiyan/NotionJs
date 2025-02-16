@@ -2,8 +2,6 @@
 @use "./mixins" as *;
 .notification-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -45,4 +43,21 @@
     cursor: pointer;
     margin-left: 10px;
   }
+}
+
+.notification-top-tight {
+  top: 20px;
+  right: 20px;
+}
+.notification-top-left {
+  top: 20px;
+  left: 20px;
+}
+.notification-bottom-tight {
+  bottom: 20px;
+  right: 20px;
+}
+.notification-bottom-tight {
+  bottom: 20px;
+  right: 20px;
 }
