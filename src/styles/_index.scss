@@ -1,4 +1,5 @@
-@use "./variables" as *; // To make the variables accessible
-@use "./mixins" as *;
-@use "./notifications";
-@use "./modals";
+// _index.scss
+@use './variables';
+@use './mixins';
+@use './notifications';
+@use './modals';
