@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fa" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمایش  ثابت</title>
+    <link rel="stylesheet" href="./dist/./styles.css"> <!-- لینک به فایل CSS شما -->
+</head>
+<body>
+    <div class="notification-container notification-top-right">
+        <!-- نوتیفیکیشن موفقیت -->
+        <div class="notification notification-success">
+            <div class="notification-content">
+                <div class="notification-title"><span>success</span></div>
+                <div class="notification-message">این یک نوتیفیکیشن موفقیت است.</div>
+            </div>
+            <button class="close-btn">&times;</button>
+        </div>
+
+        <!-- نوتیفیکیشن خطا -->
+        <div class="notification notification-error">
+            <div class="notification-content">
+                <div class="notification-title">خطا</div>
+                <div class="notification-message">این یک نوتیفیکیشن خطا است.</div>
+            </div>
+            <button class="close-btn">&times;</button>
+        </div>
+
+        <!-- نوتیفیکیشن هشدار -->
+        <div class="notification notification-warning">
+            <div class="notification-content">
+                <div class="notification-title">هشدار</div>
+                <div class="notification-message">این یک نوتیفیکیشن هشدار است.</div>
+            </div>
+            <button class="close-btn">&times;</button>
+        </div>
+
+        <!-- نوتیفیکیشن اطلاعات -->
+        <div class="notification notification-info">
+            <div class="notification-content">
+                <div class="notification-title">اطلاعات</div>
+                <div class="notification-message">این یک نوتیفیکیشن اطلاعات است.</div>
+            </div>
+            <button class="close-btn">&times;</button>
+        </div>
+
+        <!-- نوتیفیکیشن تایید -->
+        <div class="notification notification-confirm">
+            <div class="notification-content">
+                <div class="notification-title">تایید</div>
+                <div class="notification-message">آیا مطمئن هستید؟</div>
+            </div>
+            <div class="confirm-buttons">
+                <button class="confirm-btn">تایید</button>
+                <button class="cancel-btn">لغو</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // اسکریپت برای بستن نوتیفیکیشن‌ها
+        document.querySelectorAll('.close-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                button.closest('.notification').remove();
+            });
+        });
+
+        // اسکریپت برای دکمه‌های تایید و لغو
+        document.querySelectorAll('.confirm-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('تایید شد!');
+                button.closest('.notification').remove();
+            });
+        });
+
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('لغو شد!');
+                button.closest('.notification').remove();
+            });
+        });
+    </script>
+</body>
+</html>

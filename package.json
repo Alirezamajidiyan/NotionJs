@@ -34,5 +34,8 @@
     "build:esm": "tsc --module ESNext --outDir dist/esm",
     "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
     "build:css": "sass src/styles/main.scss dist/styles.css"
+  },
+  "dependencies": {
+    "react-icons": "^5.5.0"
   }
 }
