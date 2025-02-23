@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NotificationOptions } from "./types";
+import { FaCheckCircle, FaTimesCircle, FaExclamationTriangle, FaInfoCircle, FaQuestionCircle } from "react-icons/fa";
 
 interface NotificationProps extends NotificationOptions {}
 
@@ -17,10 +18,8 @@ const Notification: React.FC<NotificationProps> = ({
   onCancel,
 }) => {
   const [exiting, setExiting] = useState(false);
-  // Generate a unique ID if none is provided
   const notificationId = id || `notif-${Date.now()}`;
 
-  // Auto-dismiss (for non-confirm notifications)
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (type !== "confirm") {
@@ -31,15 +30,13 @@ const Notification: React.FC<NotificationProps> = ({
     };
   }, [duration, type]);
 
-  // Handle closing with an exit animation before firing callback
   const handleClose = () => {
     setExiting(true);
     setTimeout(() => {
       onClose && onClose();
-    }, 300); // Match exit animation duration (300ms)
+    }, 4000);
   };
 
-  // For confirm notifications, proxy confirm and cancel callbacks
   const handleConfirm = () => {
     onConfirm && onConfirm();
     handleClose();
@@ -50,61 +47,21 @@ const Notification: React.FC<NotificationProps> = ({
     handleClose();
   };
 
-  // Inline SVG icons optimized for size
+  // Render icons using react-icons
   const renderIcon = () => {
+    const iconProps = { size: 24, className: "icon" }; // تنظیم اندازه و کلاس آیکون
+
     switch (type) {
       case "success":
-        return (
-          <svg className="icon icon-success" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="#4caf50"
-              d="M9 16.2l-3.5-3.5L4 14.2l5 5 12-12-1.5-1.5z"
-            />
-          </svg>
-        );
+        return <FaCheckCircle {...iconProps} color="#4caf50" />;
       case "error":
-        return (
-          <svg className="icon icon-error" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="#f44336"
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 
-                    10-4.48 10-10S17.52 2 12 2zm5 13l-1.41 
-                    1.41L12 13.41l-3.59 3.59L7 15l3.59-3.59L7 
-                    7.83 8.41 6.41 12 10l3.59-3.59L17 7.83l-3.59 
-                    3.59L17 15z"
-            />
-          </svg>
-        );
+        return <FaTimesCircle {...iconProps} color="#f44336" />;
       case "warning":
-        return (
-          <svg className="icon icon-warning" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="#ff9800"
-              d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"
-            />
-          </svg>
-        );
+        return <FaExclamationTriangle {...iconProps} color="#ff9800" />;
       case "info":
-        return (
-          <svg className="icon icon-info" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="#2196f3"
-              d="M11 17h2v-6h-2v6zm0-8h2V7h-2v2zm1-7C6.48 
-                    2 2 6.48 2 12s4.48 10 10 10 10-4.48 
-                    10-10S17.52 2 12 2z"
-            />
-          </svg>
-        );
+        return <FaInfoCircle {...iconProps} color="#2196f3" />;
       case "confirm":
-        return (
-          <svg className="icon icon-confrim" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="#213358"
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 
-                    10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-2h-2v2zm0-4h2V7h-2v6z"
-            />
-          </svg>
-        );
+        return <FaQuestionCircle {...iconProps} color="#213358" />;
       default:
         return null;
     }
@@ -135,14 +92,12 @@ const Notification: React.FC<NotificationProps> = ({
           </button>
         )}
       </div>
-      {/* Reverse progress bar for auto-dismiss notifications */}
       {type !== "confirm" && duration > 0 && (
         <div
           className="progress-bar"
           style={{ animation: `progress ${duration}ms linear forwards` }}
         />
       )}
-      {/* Render Confirm/Cancel buttons for confirm notifications */}
       {type === "confirm" && (
         <div className="confirm-buttons">
           <button className="confirm-btn" onClick={handleConfirm}>
